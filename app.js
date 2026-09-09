@@ -53,7 +53,6 @@ function positionNonColonisedTip() {
   let left = termRect.left;
   let top = termRect.bottom + gap;
 
-  // Se esce a destra
   if (
     left + tipWidth >
     window.innerWidth - margin
@@ -288,22 +287,43 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
+async function detectFileLength(url) {
+  const res = await fetch(url, { headers: { Range: "bytes=0-0" } });
+  const contentRange = res.headers.get("Content-Range"); // e.g. "bytes 0-0/60211200"
+  if (contentRange) {
+    const total = contentRange.split("/")[1];
+    if (total && total !== "*") return parseInt(total, 10);
+  }
+  const len = res.headers.get("Content-Length");
+  if (len) return parseInt(len, 10);
+  return null;
+}
+
 function getDbWorker() {
   if (!dbWorkerPromise) {
-    dbWorkerPromise = createDbWorker(
-      [
-        {
-          from: "url",
-          config: {
-            serverMode: "full",
-            url: DB_URL,
-            requestChunkSize: 4096,
+    dbWorkerPromise = (async () => {
+      const fileLength = await detectFileLength(DB_URL);
+      if (!fileLength) {
+        throw new Error(
+          "Couldn't determine the database file size from the server. Range requests may not be supported here."
+        );
+      }
+      return createDbWorker(
+        [
+          {
+            from: "url",
+            config: {
+              serverMode: "full",
+              url: DB_URL,
+              requestChunkSize: 4096,
+              fileLength,
+            },
           },
-        },
-      ],
-      WORKER_URL,
-      WASM_URL
-    );
+        ],
+        WORKER_URL,
+        WASM_URL
+      );
+    })();
   }
   return dbWorkerPromise;
 }
