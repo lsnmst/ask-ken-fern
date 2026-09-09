@@ -6,7 +6,7 @@
 
 const RESOLUTION = 5;              // must match the resolution used when building the DB
 const SEARCH_RING = 1;             // 0 = exact cell only, 1 = cell + immediate neighbours
-const DB_URL_PREFIX = "./ask_ken_fern.sqlite";
+const DB_URL_PREFIX = "./ask_ken_fern.sqlite.";
 const DB_CHUNK_SIZE = 1024 * 1024 * 1024;
 const WORKER_URL = "./sqlite.worker.js";
 const WASM_URL = "./sql-wasm.wasm";
