@@ -6,7 +6,8 @@
 
 const RESOLUTION = 5;              // must match the resolution used when building the DB
 const SEARCH_RING = 1;             // 0 = exact cell only, 1 = cell + immediate neighbours
-const DB_URL = "./ask_ken_fern.sqlite";
+const DB_URL_PREFIX = "./ask_ken_fern.sqlite";
+const DB_CHUNK_SIZE = 1024 * 1024 * 1024;
 const WORKER_URL = "./sqlite.worker.js";
 const WASM_URL = "./sql-wasm.wasm";
 
@@ -289,7 +290,7 @@ form.addEventListener("submit", async (event) => {
 
 async function detectFileLength(url) {
   const res = await fetch(url, { headers: { Range: "bytes=0-0" } });
-  const contentRange = res.headers.get("Content-Range"); // e.g. "bytes 0-0/60211200"
+  const contentRange = res.headers.get("Content-Range");
   if (contentRange) {
     const total = contentRange.split("/")[1];
     if (total && total !== "*") return parseInt(total, 10);
@@ -302,8 +303,9 @@ async function detectFileLength(url) {
 function getDbWorker() {
   if (!dbWorkerPromise) {
     dbWorkerPromise = (async () => {
-      const fileLength = await detectFileLength(DB_URL);
-      if (!fileLength) {
+      const chunkUrl = DB_URL_PREFIX + "0"; // chunk 0 = ask_ken_fern.sqlite.0
+      const databaseLengthBytes = await detectFileLength(chunkUrl);
+      if (!databaseLengthBytes) {
         throw new Error(
           "Couldn't determine the database file size from the server. Range requests may not be supported here."
         );
@@ -313,10 +315,12 @@ function getDbWorker() {
           {
             from: "url",
             config: {
-              serverMode: "full",
-              url: DB_URL,
+              serverMode: "chunked",
+              urlPrefix: DB_URL_PREFIX,
+              suffixLength: 1,
+              serverChunkSize: DB_CHUNK_SIZE,
+              databaseLengthBytes,
               requestChunkSize: 4096,
-              fileLength,
             },
           },
         ],
