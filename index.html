@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ask Ken Fern. Edible plants near you</title>
+  <meta name="description"
+    content="Discover edible and non-colonised edible plants near you in Europe. Ask Ken Fern combines Plants For A Future botanical data with GBIF occurrence records." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://alessandro.vado.li/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Edible Plants Near You in Europe | Ask Ken Fern" />
+  <meta property="og:description"
+    content="Find edible and non-colonised edible plants recorded near your location in Europe." />
+  <meta property="og:url" content="https://alessandro.vado.li/" />
+  <meta property="og:image"
+    content="https://www.permanentpublications.co.uk/wp-content/uploads/2012/03/Ken-Fern-web-1-400x602.jpg" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Datatype:wght@100..900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <p class="subtitlehero">A field lookup for edible and non-colonised edible plants in Europe. Built on Ken Fern's <a
+      href="https://temperate.theferns.info/" target="_blank" rel="noopener">Plants For A Future</a> and occurrence
+    records from <a href="https://www.gbif.org/" target="_blank" rel="noopener">GBIF</a>.</p>
+
+  <main class="page">
+    <header class="hero">
+      <h1 class="ask-ken">
+        <span class="ask-ken__title">Ask Ken Fern</span>
+
+        <span class="ask-ken__photo" aria-hidden="true">
+          <img src="https://www.permanentpublications.co.uk/wp-content/uploads/2012/03/Ken-Fern-web-1-400x602.jpg"
+            alt="">
+        </span>
+      </h1>
+      <!--       
+      <p class="subtitle">A field lookup for edible and non-colonised edible plants. Built on Ken Fern's <a
+          href="https://temperate.theferns.info/" target="_blank" rel="noopener">Plants For A Future</a> and occurrence
+        records from <a href="https://www.gbif.org/" target="_blank" rel="noopener">GBIF</a>. Exclusively within the
+        European region.</p>
+      -->
+    </header>
+
+    <form id="search-form" class="query" autocomplete="off">
+      <label for="place-input" class="query__sentence">
+        I'm in
+        <input id="place-input" type="text" name="place" placeholder="e.g. Berlin, Germany" />
+        , tell me what edible and <span class="info-term" id="non-colonised-info" role="button" tabindex="0"
+          aria-expanded="false" aria-controls="non-colonised-tip">non-colonised edible plants</span> I can find around
+        here.
+      </label>
+
+      <div id="non-colonised-tip" class="info-tip" role="tooltip" hidden>
+        You're probably arguing a little annoyed, aren't you? "Non-colonised", in Europe?<br /><br />Non-colonised
+        edible
+        plants are plants that people can eat but that have never become, or are no longer part of,
+        the dominant food system. They may have been overlooked, pushed aside or simply forgotten as food, even though
+        people in particular places have continued to know, gather, grow and eat them. What makes a plant
+        “non-colonised” is therefore not whether it is rare, wild or native, but the history of how it has been treated
+        and valued as food.<br /><br />In Europe, this can include native plants, plants that have become naturalised,
+        as well as plants introduced in the past. What they have in common is that their edible uses have survived in
+        particular communities and places through rural and local traditions, Indigenous and migrant knowledge, or
+        other forms of everyday food practice while remaining largely outside mainstream food culture, agriculture and
+        markets.<br /><br />Read more about the concept of "non-colonised edible plants" in the work of Antônio Bispo
+        dos Santos.
+      </div>
+
+      <button type="submit" id="search-button">Search</button>
+    </form>
+
+    <section id="status" class="status" aria-live="polite"></section>
+
+    <p id="input-error" class="status" aria-live="polite" data-tone="error"></p>
+
+    <section id="results" class="results"></section>
+
+    <footer class="footer">
+      <p>
+        Botanical &amp; edibility data from
+        <a href="https://temperate.theferns.info/" target="_blank" rel="noopener">temperate.theferns.info</a>
+        (Ken Fern / Plants For A Future). Occurrence data from
+        <a href="https://www.gbif.org/" target="_blank" rel="noopener">GBIF</a>,
+        DOI: <a href="https://doi.org/10.15468/dl.axqfd9" target="_blank" rel="noopener">10.15468/dl.axqfd9</a>.
+        Location search via <a href="https://nominatim.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap
+          Nominatim</a>. The area covered by the results is within a 24km radius of the requested location.
+      </p>
+      <p class="disclaimer">
+        “Presence” means that the species has been observed in nearby areas in the past; this does not guarantee that it
+        can be found today, and <u><b>and under no circumstances does it replace identification by an expert prior to
+            consumption</b></u>. To get in
+        touch, <a href="https://www.instagram.com/alessandromusetta/" target="_blank" rel="noopener">DM</a> ⸙͎۪۫
+      </p>
+    </footer>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/h3-js@4.5.0/dist/h3-js.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sql.js-httpvfs@0.8.12/dist/index.js"></script>
+
+  <div id="species-image-preview" class="species-image-preview" aria-hidden="true">
+    <img id="species-image-preview-img" alt="">
+    <div id="species-image-preview-credit" class="species-image-preview__credit"></div>
+  </div>
+
+  <script src="app.js"></script>
+
+</body>
+
+</html>
